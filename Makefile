@@ -23,6 +23,9 @@ minikube:
 
 helm: 
 	helm install helmchart ./charts/helmchart
+	
+pods:
+	kubectl get pods
 
 service:
 	kubectl get service
