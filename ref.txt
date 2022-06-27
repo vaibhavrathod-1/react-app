@@ -1,0 +1,10 @@
+- name: get svc
+        run: kubectl get svc
+      - name: get pode 
+        run: kubectl get po
+      - name: curl service list
+        run:  minikube service list
+      - name: get pode 
+        run: kubectl get po
+      - name: curl
+        run: curl $(minikube service helmchart --url)

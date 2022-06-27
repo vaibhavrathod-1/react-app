@@ -1,0 +1,53 @@
+name: Makefile CI
+
+on:
+  push:
+    branches: [ "master" ]
+  pull_request:
+    branches: [ "master" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+     DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+     DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+
+    steps:
+
+    - uses: actions/checkout@v3
+    
+    - name: build
+      run: make build
+      
+    - name: push
+      run: make push
+
+    - name: minikube start
+      run: make minikube
+          
+    - name: helm
+      run: make helm
+    
+    - name: Sleep for 300 seconds
+      uses: jakejarvis/wait-action@master
+      with:
+        time: '150s'
+  
+    - name: get service
+      run: make service
+    
+    - name: get svc
+      run: kubectl get svc
+
+    - name: get pod 
+      run: kubectl get po
+
+    - name: curl service list
+      run:  minikube service list
+
+    - name: get pod 
+      run: kubectl get po
+
+    - name: curl
+      run: curl $(minikube service helmchart --url)
